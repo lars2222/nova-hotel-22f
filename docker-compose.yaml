@@ -3,7 +3,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./docker/web/Dockerfile
     volumes:
       - ./site:/var/www/html
     ports:
@@ -20,9 +20,11 @@ services:
       MYSQL_ROOT_HOST: '%'
     ports:
       - "3307:3306"
-
+    volumes:
+      - dbdata:/var/lib/mysql
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:latest
+    build:
+      dockerfile: ./docker/phpmyadmin/Dockerfile
     ports:
       - 8000:80
     environment:
@@ -30,3 +32,7 @@ services:
       - PMA_HOST=mariadb
     depends_on:
       - mariadb
+volumes:
+  dbdata:
+
+
